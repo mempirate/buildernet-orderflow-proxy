@@ -134,7 +134,7 @@ func (sq *ShareQueue) Run() {
 					continue
 				}
 
-				sq.log.Info("Created client for peer", slog.String("peer", info.Name), slog.String("name", sq.name))
+				sq.log.Info("Created client for peer", slog.String("peer", info.Name), slog.String("name", sq.name), slog.String("address", info.SystemAPIAddress()))
 				newPeer := newShareQueuePeer(info.Name, client, info, info.SystemAPIAddress())
 				peers = append(peers, newPeer)
 				for worker := range workersPerPeer {
