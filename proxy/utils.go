@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	DefaultOrderflowProxyPublicPort = "5544"
+	DefaultOrderflowProxyPublicPort = "9755"
 	DefaultHTTPCLientWriteBuffer    = cli.GetEnvInt("HTTP_CLIENT_WRITE_BUFFER", 64<<10) // 64 KiB
 )
 
@@ -53,16 +53,17 @@ func HTTPClientWithMaxConnections(maxOpenConnections int) *http.Client {
 	}
 }
 
-func NewFastHTTPClient(certPEM []byte, maxOpenConnections int) (*fasthttp.Client, error) {
+func NewFastHTTPClient(certPEM []byte, maxOpenConnections int, skipVerify bool) (*fasthttp.Client, error) {
 	var tlsConfig *tls.Config
-	if certPEM != nil {
+	if certPEM != nil && !skipVerify {
 		certPool := x509.NewCertPool()
 		if ok := certPool.AppendCertsFromPEM(certPEM); !ok {
 			return nil, errCertificate
 		}
 		tlsConfig = &tls.Config{
-			RootCAs:    certPool,
-			MinVersion: tls.VersionTLS12,
+			RootCAs:            certPool,
+			MinVersion:         tls.VersionTLS12,
+			InsecureSkipVerify: skipVerify,
 		}
 	}
 

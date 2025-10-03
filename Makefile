@@ -31,11 +31,12 @@ build: ## Build the HTTP server
 .PHONY: build-receiver-proxy
 build-receiver-proxy: ## Build only the receiver-proxy
 	@mkdir -p ./build
-	CGO_ENABLED=0 GOOS=linux go build \
+	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
 		-trimpath \
 		-ldflags "-s -w -buildid= -X github.com/flashbots/tdx-orderflow-proxy/common.Version=${VERSION}" \
 		-v -o ./build/receiver-proxy \
 		cmd/receiver-proxy/main.go
+	@mv ./build/receiver-proxy ../buildernet-orderflow-proxy-v2/simulation/receiver-proxy
 
 ##@ Test & Development
 

@@ -9,6 +9,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
 )
@@ -31,10 +32,10 @@ type ConfighubBuilder struct {
 }
 
 func (b *ConfighubBuilder) SystemAPIAddress() string {
-	if b.DNSName != "" {
-		return OrderflowProxyURLFromIPOrDNSName(b.DNSName)
-	}
-	return OrderflowProxyURLFromIPOrDNSName(b.IP)
+	// if b.DNSName != "" {
+	// 	return OrderflowProxyURLFromIPOrDNSName(b.DNSName)
+	// }
+	return OrderflowProxyURLFromIPOrDNSName(strings.TrimPrefix(b.IP, "http://"))
 }
 
 func (b *ConfighubBuilder) TLSCert() string {
