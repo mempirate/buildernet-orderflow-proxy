@@ -55,7 +55,7 @@ func HTTPClientWithMaxConnections(maxOpenConnections int) *http.Client {
 
 func NewFastHTTPClient(certPEM []byte, maxOpenConnections int, skipVerify bool) (*fasthttp.Client, error) {
 	var tlsConfig *tls.Config
-	if certPEM != nil && !skipVerify {
+	if certPEM != nil {
 		certPool := x509.NewCertPool()
 		if ok := certPool.AppendCertsFromPEM(certPEM); !ok {
 			return nil, errCertificate
@@ -64,6 +64,12 @@ func NewFastHTTPClient(certPEM []byte, maxOpenConnections int, skipVerify bool) 
 			RootCAs:            certPool,
 			MinVersion:         tls.VersionTLS12,
 			InsecureSkipVerify: skipVerify,
+		}
+	}
+
+	if skipVerify {
+		tlsConfig = &tls.Config{
+			InsecureSkipVerify: true,
 		}
 	}
 
