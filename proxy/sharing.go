@@ -224,7 +224,7 @@ func sendShareRequest(logger *slog.Logger, req *ParsedRequest, request *fasthttp
 
 func (sq *ShareQueue) proxyRequests(peer *shareQueuePeer, worker int) {
 	proxiedRequestCount := 0
-	logger := sq.log.With(slog.String("peer", peer.name), slog.String("name", sq.name), slog.Int("worker", worker))
+	logger := sq.log.With(slog.String("peer", peer.name), slog.String("address", peer.endpoint), slog.String("name", sq.name), slog.Int("worker", worker))
 	logger.Info("Started proxying requests to peer")
 	defer func() {
 		logger.Info("Stopped proxying requets to peer", slog.Int("proxiedRequestCount", proxiedRequestCount))
