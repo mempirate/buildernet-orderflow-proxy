@@ -127,7 +127,7 @@ func (sq *ShareQueue) Run() {
 				if info.OrderflowProxy.EcdsaPubkeyAddress == sq.signer.Address() {
 					continue
 				}
-				client, err := NewFastHTTPClient([]byte(info.TLSCert()), workersPerPeer, true)
+				client, err := NewFastHTTPClient(nil, workersPerPeer, true)
 				if err != nil {
 					sq.log.Error("Failed to create a peer client3", slog.Any("error", err))
 					shareQueueInternalErrors.Inc()
