@@ -134,9 +134,9 @@ func RPCClientWithCertAndSigner(endpoint string, certPEM []byte, signer *signatu
 
 func OrderflowProxyURLFromIPOrDNSName(ipOrDNSName string) string {
 	if strings.Contains(ipOrDNSName, ":") {
-		return "https://" + ipOrDNSName
+		return "http://" + ipOrDNSName
 	} else {
-		return "https://" + net.JoinHostPort(ipOrDNSName, DefaultOrderflowProxyPublicPort)
+		return "http://" + net.JoinHostPort(ipOrDNSName, DefaultOrderflowProxyPublicPort)
 	}
 }
 
