@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	ShareWorkerQueueSize = 10000
+	ShareWorkerQueueSize = 1000000
 	requestTimeout       = time.Second * 10
 
 	errUnknownRequestType = errors.New("unknown request type for sharing")
