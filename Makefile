@@ -29,7 +29,7 @@ build: ## Build the HTTP server
 	go build -trimpath -ldflags "-X github.com/flashbots/tdx-orderflow-proxy/common.Version=${VERSION}" -v -o ./build/test-e2e-latency cmd/test-e2e-latency/main.go
 
 .PHONY: build-receiver-proxy
-build-receiver-proxy: ## Build only the receiver-proxy
+build-receiver-proxy: ## Build only the receiver-proxy (production - stripped symbols)
 	@mkdir -p ./build
 	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
 		-trimpath \
@@ -37,6 +37,27 @@ build-receiver-proxy: ## Build only the receiver-proxy
 		-v -o ./build/receiver-proxy \
 		cmd/receiver-proxy/main.go
 	@mv ./build/receiver-proxy ../buildernet-orderflow-proxy-v2/simulation/receiver-proxy
+
+.PHONY: build-receiver-proxy-debug
+build-receiver-proxy-debug: ## Build receiver-proxy with debug symbols for profiling
+	@mkdir -p ./build
+	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
+		-trimpath \
+		-ldflags "-buildid= -X github.com/flashbots/tdx-orderflow-proxy/common.Version=${VERSION}" \
+		-v -o ./build/receiver-proxy-debug \
+		cmd/receiver-proxy/main.go
+	@mv ./build/receiver-proxy-debug ../buildernet-orderflow-proxy-v2/simulation/receiver-proxy-debug
+
+.PHONY: build-receiver-proxy-profile
+build-receiver-proxy-profile: ## Build receiver-proxy optimized for profiling (with symbols, optimizations)
+	@mkdir -p ./build
+	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
+		-trimpath \
+		-ldflags "-buildid= -X github.com/flashbots/tdx-orderflow-proxy/common.Version=${VERSION}" \
+		-gcflags="-N -l" \
+		-v -o ./build/receiver-proxy-profile \
+		cmd/receiver-proxy/main.go
+	@mv ./build/receiver-proxy-profile ../buildernet-orderflow-proxy-v2/simulation/receiver-proxy-profile
 
 ##@ Test & Development
 
