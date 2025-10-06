@@ -145,16 +145,19 @@ func (prx *ReceiverProxy) EthSendBundle(ctx context.Context, ethSendBundle rpcty
 
 	err := prx.ValidateSigner(ctx, &parsedRequest, systemEndpoint)
 	if err != nil {
+		prx.Log.Warn("Failed to validate signer", slog.Any("error", err))
 		return err
 	}
 
 	_, err = EnsureReplacementUUID(&ethSendBundle)
 	if err != nil {
+		prx.Log.Warn("Failed to ensure replacement UUID", slog.Any("error", err))
 		return err
 	}
 
 	err = ValidateEthSendBundle(&ethSendBundle, systemEndpoint)
 	if err != nil {
+		prx.Log.Warn("Failed to validate eth send bundle", slog.Any("error", err))
 		return err
 	}
 
