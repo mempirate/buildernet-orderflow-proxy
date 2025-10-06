@@ -127,7 +127,7 @@ func (sq *ShareQueue) Run() {
 				if info.OrderflowProxy.EcdsaPubkeyAddress == sq.signer.Address() {
 					continue
 				}
-				client, err := NewFastHTTPClient(nil, workersPerPeer, true)
+				client, err := NewFastHTTPClient([]byte(info.TLSCert()), workersPerPeer, true)
 				if err != nil {
 					sq.log.Error("Failed to create a peer client3", slog.Any("error", err))
 					shareQueueInternalErrors.Inc()
@@ -203,7 +203,7 @@ func sendShareRequest(logger *slog.Logger, req *ParsedRequest, request *fasthttp
 			logSendErrorLevel = slog.LevelWarn
 		}
 		if err != nil {
-			logger.Log(context.Background(), logSendErrorLevel, "Error while proxying request", slog.Any("error", err))
+			logger.Log(context.Background(), logSendErrorLevel, "Error while proxying request", slog.Any("error", err), slog.String("url", request.URI().String()))
 			incShareQueuePeerRPCErrors(peerName)
 		} else {
 			var parsedResp jsonrpc.JSONRPCResponse
