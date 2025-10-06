@@ -253,7 +253,7 @@ func (sq *ShareQueue) proxyRequests(peer *shareQueuePeer, worker int) {
 		}
 
 		proxiedRequestCount += 1
-		logger.Debug("Message proxied")
+		logger.Debug("Message proxied", slog.String("url", request.URI().String()))
 	}
 }
 
