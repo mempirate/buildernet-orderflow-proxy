@@ -36,7 +36,7 @@ build-receiver-proxy: ## Build only the receiver-proxy (production - stripped sy
 		-ldflags "-s -w -buildid= -X github.com/flashbots/tdx-orderflow-proxy/common.Version=${VERSION}" \
 		-v -o ./build/receiver-proxy \
 		cmd/receiver-proxy/main.go
-	@mv ./build/receiver-proxy ../buildernet-orderflow-proxy-v2/simulation/receiver-proxy
+	@mv ./build/receiver-proxy ../receiver-proxy
 
 .PHONY: build-receiver-proxy-debug
 build-receiver-proxy-debug: ## Build receiver-proxy with debug symbols for profiling
@@ -46,7 +46,7 @@ build-receiver-proxy-debug: ## Build receiver-proxy with debug symbols for profi
 		-ldflags "-buildid= -X github.com/flashbots/tdx-orderflow-proxy/common.Version=${VERSION}" \
 		-v -o ./build/receiver-proxy-debug \
 		cmd/receiver-proxy/main.go
-	@mv ./build/receiver-proxy-debug ../buildernet-orderflow-proxy-v2/simulation/receiver-proxy-debug
+	@mv ./build/receiver-proxy-debug ../receiver-proxy
 
 .PHONY: build-receiver-proxy-profile
 build-receiver-proxy-profile: ## Build receiver-proxy optimized for profiling (with symbols, optimizations)
@@ -57,7 +57,7 @@ build-receiver-proxy-profile: ## Build receiver-proxy optimized for profiling (w
 		-gcflags="-N -l" \
 		-v -o ./build/receiver-proxy-profile \
 		cmd/receiver-proxy/main.go
-	@mv ./build/receiver-proxy-profile ../buildernet-orderflow-proxy-v2/simulation/receiver-proxy-profile
+	@mv ./build/receiver-proxy-profile ../receiver-proxy
 
 ##@ Test & Development
 
