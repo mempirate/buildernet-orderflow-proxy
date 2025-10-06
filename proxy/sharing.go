@@ -58,6 +58,10 @@ func (p *shareQueuePeer) Close() {
 }
 
 func (p *shareQueuePeer) SendRequest(log *slog.Logger, request *ParsedRequest) {
+	if len(p.ch)%1000 == 0 {
+		log.Info("Peer is queueing requests", slog.String("peer", p.name), slog.Int("queueLength", len(p.ch)))
+	}
+
 	select {
 	case p.ch <- request:
 	default:
