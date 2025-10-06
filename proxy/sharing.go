@@ -180,6 +180,11 @@ func sendShareRequest(logger *slog.Logger, req *ParsedRequest, request *fasthttp
 		return nil
 	}
 
+	// Skip local builder
+	if peerName == "local-builder" {
+		return nil
+	}
+
 	timeInQueue := time.Since(req.receivedAt)
 
 	request.Header.Set(signature.HTTPHeader, req.signatureHeader)
