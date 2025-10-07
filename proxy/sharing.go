@@ -193,6 +193,7 @@ func sendShareRequest(logger *slog.Logger, req *ParsedRequest, request *fasthttp
 	timeInQueue := time.Since(req.receivedAt)
 
 	request.Header.Set(signature.HTTPHeader, req.signatureHeader)
+	request.Header.Set("X-BuilderNet-SentAtUs", strconv.FormatInt(time.Now().UnixMicro(), 10))
 	request.SetBodyRaw(req.serializedJSONRPCRequest)
 
 	resp := fasthttp.AcquireResponse()
@@ -248,7 +249,6 @@ func (sq *ShareQueue) proxyRequests(peer *shareQueuePeer, worker int) {
 	request.SetRequestURI(peer.endpoint)
 	request.Header.SetMethod(http.MethodPost)
 	request.Header.SetContentTypeBytes([]byte("application/json"))
-	request.Header.Set("X-BuilderNet-SentAtUs", strconv.FormatInt(time.Now().UnixMicro(), 10))
 	defer fasthttp.ReleaseRequest(request)
 
 	for {
