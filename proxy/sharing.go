@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/flashbots/go-utils/jsonrpc"
@@ -243,6 +244,7 @@ func (sq *ShareQueue) proxyRequests(peer *shareQueuePeer, worker int) {
 	request.SetRequestURI(peer.endpoint)
 	request.Header.SetMethod(http.MethodPost)
 	request.Header.SetContentTypeBytes([]byte("application/json"))
+	request.Header.Set("X-BuilderNet-SentAtUs", strconv.FormatInt(time.Now().UnixMicro(), 10))
 	defer fasthttp.ReleaseRequest(request)
 
 	for {
