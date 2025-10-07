@@ -166,7 +166,7 @@ func NewReceiverProxy(config ReceiverProxyConfig) (*ReceiverProxy, error) {
 	// }
 	// go archiveQueue.Run()
 
-	// prx.peerUpdaterClose = make(chan struct{})
+	prx.peerUpdaterClose = make(chan struct{})
 	go func() {
 		for {
 			select {
