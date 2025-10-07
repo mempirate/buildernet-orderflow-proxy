@@ -103,7 +103,7 @@ func (aq *ArchiveQueue) Run() {
 			select {
 			case workersQueue <- processedReq:
 			default:
-				aq.log.Error("Archive workers are stalling")
+				aq.log.Debug("Archive workers are stalling")
 			}
 		}
 	}
