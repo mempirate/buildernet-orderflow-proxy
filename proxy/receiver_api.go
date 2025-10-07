@@ -157,7 +157,7 @@ func (prx *ReceiverProxy) EthSendBundle(ctx context.Context, ethSendBundle rpcty
 
 	err = ValidateEthSendBundle(&ethSendBundle, systemEndpoint)
 	if err != nil {
-		prx.Log.Warn("Failed to validate eth send bundle", slog.Any("error", err))
+		prx.Log.Warn("Failed to validate eth send bundle", slog.Any("error", err), slog.Any("replacementUUID", ethSendBundle.ReplacementUUID))
 		return err
 	}
 
