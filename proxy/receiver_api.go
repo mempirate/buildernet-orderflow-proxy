@@ -437,7 +437,7 @@ func (prx *ReceiverProxy) HandleParsedRequest(ctx context.Context, parsedRequest
 	if !parsedRequest.systemEndpoint {
 		select {
 		case <-ctx.Done():
-			prx.Log.Error("Archive queue is stalling")
+			prx.Log.Debug("Archive queue is stalling")
 		case prx.archiveQueue <- &parsedRequest:
 		}
 	}
