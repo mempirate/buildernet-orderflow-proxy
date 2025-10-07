@@ -201,6 +201,10 @@ func sendShareRequest(logger *slog.Logger, req *ParsedRequest, request *fasthttp
 	requestDuration := time.Since(start)
 	timeE2E := timeInQueue + requestDuration
 
+	if req.receivedAt.UnixMicro()%1000 == 0 {
+		logger.Info("Request timings", slog.Time("receivedAt", req.receivedAt), slog.Time("start", start), slog.Duration("requestDuration", requestDuration), slog.Duration("timeInQueue", timeInQueue), slog.Duration("timeE2E", timeE2E))
+	}
+
 	// in background update metrics and handle response
 	go func() {
 		isBig := req.size >= bigRequestSize
