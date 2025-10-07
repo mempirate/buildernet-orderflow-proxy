@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/flashbots/go-utils/rpcclient"
 	"github.com/flashbots/go-utils/signature"
 	"github.com/google/uuid"
 	"github.com/hashicorp/golang-lru/v2/expirable"
@@ -151,22 +150,23 @@ func NewReceiverProxy(config ReceiverProxyConfig) (*ReceiverProxy, error) {
 	archiveFlushCh := make(chan struct{})
 	prx.archiveQueue = archiveQueueCh
 	prx.archiveFlushQueue = archiveFlushCh
-	archiveHTTPClient := HTTPClientWithMaxConnections(config.ArchiveConnections)
-	archiveClient := rpcclient.NewClientWithOpts(config.ArchiveEndpoint, &rpcclient.RPCClientOpts{
-		Signer:     orderflowSigner,
-		HTTPClient: archiveHTTPClient,
-	})
-	archiveQueue := ArchiveQueue{
-		log:               prx.Log,
-		queue:             archiveQueueCh,
-		flushQueue:        archiveFlushCh,
-		archiveClient:     archiveClient,
-		blockNumberSource: NewBlockNumberSource(config.EthRPC),
-		workerCount:       config.ArchiveWorkerCount,
-	}
-	go archiveQueue.Run()
+	// archiveHTTPClient := HTTPClientWithMaxConnections(config.ArchiveConnections)
+	// archiveClient := rpcclient.NewClientWithOpts(config.ArchiveEndpoint, &rpcclient.RPCClientOpts{
+	// 	Signer:     orderflowSigner,
+	// 	HTTPClient: archiveHTTPClient,
+	// })
 
-	prx.peerUpdaterClose = make(chan struct{})
+	// archiveQueue := ArchiveQueue{
+	// 	log:               prx.Log,
+	// 	queue:             archiveQueueCh,
+	// 	flushQueue:        archiveFlushCh,
+	// 	archiveClient:     archiveClient,
+	// 	blockNumberSource: NewBlockNumberSource(config.EthRPC),
+	// 	workerCount:       config.ArchiveWorkerCount,
+	// }
+	// go archiveQueue.Run()
+
+	// prx.peerUpdaterClose = make(chan struct{})
 	go func() {
 		for {
 			select {
